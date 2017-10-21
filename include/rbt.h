@@ -83,13 +83,9 @@ class RBT
 		//=== INTERNAL MEMBERS
 		void init( const KeyType & smallest_key, const KeyTypeLess & comp ) ;
 		
-		void rotate_right_child( RBNode *  root, RBNode * & node );
+		void rotate_right_child( RBNode *  node );
 
-		void rotate_left_child( RBNode *  root, RBNode * & node );
-
-		void rotate_right_child1( RBNode * root);
-
-		void rotate_left_child1( RBNode *  root);	
+		void rotate_left_child( RBNode *  node );
 
 		RBNode * find_node(const KeyType & key);
 
@@ -168,10 +164,9 @@ class RBT
 
 		void postorder( const UnaryFunction & visit );
 
-		void inorder()
-		{
-			inorder(this->m_root, print);
-		}
+		template < typename UnaryFunction >
+
+		void inorder( const UnaryFunction & visit );
 
 		inline bool empty( void ) const { return m_n_nodes == 0; };
 
@@ -220,7 +215,7 @@ class RBT
                 }
                 else
                 {
-                    os_ << visited.second->data  << "\n";
+                    os_ << visited.second->data  << "*" << visited.second->color << "\n";
                 }
 
                 // (2) Now we traverse the left and right subtrees.

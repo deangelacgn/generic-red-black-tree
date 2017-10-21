@@ -1,63 +1,63 @@
 #include "rbt.h"
 
 template < typename KeyType, typename ValueType >
-void RBT< KeyType, ValueType >::rotate_right_child( RBNode * root, RBNode * & node )
+void RBT< KeyType, ValueType >::rotate_right_child( RBNode *  node )
 {
-	RBNode * aux = root->right;
-	root->right = aux->left;
+	RBNode * aux = node->right;
+	node->right = aux->left;
 
 	if(aux->left != null_node)
 	{
-		aux->left->parent = root;
+		aux->left->parent = node;
 	}
 
-	aux->parent = root->parent;
+	aux->parent = node->parent;
 
-	if(root->parent == null_node)
+	if(node->parent == null_node)
 	{
 		m_root = aux;
 	}
-	else if(root == root->parent->left)
+	else if(node == node->parent->left)
 	{
-		root->parent->left = aux;
+		node->parent->left = aux;
 	}
 	else
 	{
-		root->parent->right = aux;
+		node->parent->right = aux;
 	}
 
-	aux->left = root;
-	root->parent = aux;
+	aux->left = node;
+	node->parent = aux;
 }
 
 template < typename KeyType, typename ValueType >
-void RBT< KeyType, ValueType >::rotate_left_child( RBNode * root, RBNode * & node )
+void RBT< KeyType, ValueType >::rotate_left_child( RBNode *  node )
 {
-	RBNode * aux = root->left;
-	root->left = aux->right;
+	RBNode * aux = node->left;
+	node->left = aux->right;
 
 	if(aux->right != null_node)
 	{
-		aux->right->parent = root;
+		aux->right->parent = node;
 	}
 
-	aux->parent = root->parent;
+	aux->parent = node->parent;
 
-	if(root->parent == null_node)
+	if(node->parent == null_node)
 	{
 		m_root = aux;
 	}
-	else if(root == root->parent->right)
+	else if(node == node->parent->right)
 	{
-		root->parent->right = aux;
+		node->parent->right = aux;
 	}
 	else
 	{
-		root->parent->left = aux;
+		node->parent->left = aux;
 	}
 
-	aux->right = root;
-	root->parent = aux;
+	aux->right = node;
+	node->parent = aux;
 }
 
 template < typename KeyType, typename ValueType >
@@ -107,12 +107,12 @@ void RBT< KeyType, ValueType >::rearrange( RBNode * & root, RBNode * & inserted_
 			{
 				if(inserted_node == m_parent->right)
 				{
-					rotate_right_child(m_root, m_parent);
+					rotate_right_child(m_parent);
 					inserted_node = m_parent;
 					m_parent = inserted_node->parent;
 				}
 
-				rotate_left_child(m_root, m_grand);
+				rotate_left_child(m_grand);
 
 				//Change colors
 				aux = m_parent->color;
@@ -126,6 +126,7 @@ void RBT< KeyType, ValueType >::rearrange( RBNode * & root, RBNode * & inserted_
 		else
 		{
 			m_uncle = m_grand->left;
+			std::cout << "to aqui" << std::endl;
 
 			if((m_uncle != null_node) && (m_uncle->color == color_e::RED))
 			{
@@ -136,14 +137,17 @@ void RBT< KeyType, ValueType >::rearrange( RBNode * & root, RBNode * & inserted_
 			}
 			else
 			{
+				std::cout << "e aqui" << std::endl;
+
 				if(inserted_node == m_parent->left)
 				{
-					rotate_left_child(m_root, m_parent);
+					std::cout << "mas nao aqui" << std::endl;
+					rotate_left_child(m_parent);
 					inserted_node = m_parent;
 					m_parent = inserted_node->parent;
 				}
 
-				rotate_right_child(m_root, m_grand);
+				rotate_right_child(m_grand);
 
 				// Change colors
 				aux = m_parent->color;
@@ -274,7 +278,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				std::cout<<"Caso 1"<<std::endl;							
 				root->parent->color=color_e::RED;   							
 				getSibling(root)->color=color_e::BLACK;
-				rotate_right_child1(root->parent);	
+				rotate_right_child(root->parent);	
 
 			}
 			else if(getSibling(root)->left->color == color_e::BLACK && getSibling(root)->right->color == color_e::BLACK){ //caso 2
@@ -293,7 +297,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				std::cout<<"Caso 3"<<std::endl;							
 				getSibling(root)->color=color_e::RED;
 				getSibling(root)->left->color=color_e::BLACK; 
-				rotate_left_child1(root->parent->right);
+				rotate_left_child(root->parent->right);
 
 				}else{
 				//caso 4
@@ -302,7 +306,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				getSibling(root)->color = root->parent->color;								
 				root->parent->color = color_e::BLACK;							
 				getSibling(root)->right->color = color_e::BLACK;											
-				rotate_right_child1(root->parent);
+				rotate_right_child(root->parent);
 				//root->parent->left = null_node;
 				break;
 				}
@@ -312,7 +316,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				std::cout<<"Caso 1"<<std::endl;							
 				root->parent->color=color_e::RED;   							
 				getSibling(root)->color=color_e::BLACK;
-				rotate_left_child1(root->parent);	
+				rotate_left_child(root->parent);	
 
 			}
 			else if(getSibling(root)->left->color == color_e::BLACK && getSibling(root)->right->color == color_e::BLACK){ //caso 2
@@ -331,7 +335,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				std::cout<<"Caso 3"<<std::endl;							
 				getSibling(root)->color=color_e::RED;
 				getSibling(root)->right->color=color_e::BLACK; 
-				rotate_right_child1(root->parent->left);
+				rotate_right_child(root->parent->left);
 
 				}else{
 				//caso 4
@@ -340,7 +344,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				getSibling(root)->color = root->parent->color;								
 				root->parent->color = color_e::BLACK;							
 				getSibling(root)->left->color = color_e::BLACK;											
-				rotate_left_child1(root->parent);
+				rotate_left_child(root->parent);
 				//root->parent->left = null_node;
 				break;
 				}
@@ -495,7 +499,7 @@ void RBT< KeyType, ValueType >::inorder( const RBNode * root, const UnaryFunctio
 
     inorder(root->left, visit);
     
-    visit(root->color);
+    visit(root->data);
     
     inorder(root->right, visit);
 }
@@ -616,6 +620,13 @@ void RBT< KeyType, ValueType >::postorder( const UnaryFunction & visit )
 }
 
 template < typename KeyType, typename ValueType >
+template < typename UnaryFunction >
+void RBT< KeyType, ValueType >::inorder( const UnaryFunction & visit ) 
+{
+	inorder(this->m_root, visit);
+}
+
+template < typename KeyType, typename ValueType >
 bool RBT< KeyType, ValueType >::retrieve( const KeyType & key, ValueType & value ) const 
 {
 	RBNode * temp = m_root;
@@ -728,62 +739,4 @@ void RBT< KeyType, ValueType >::remove( const KeyType & key )
     	temp = nullptr;		
 	}
 }
-
-template < typename KeyType, typename ValueType >
-void RBT< KeyType, ValueType >::rotate_right_child1( RBNode * root)
-{
-	RBNode * aux = root->right;
-	root->right = aux->left;
-
-	if(aux->left != null_node)
-	{
-		aux->left->parent = root;
-	}
-
-	aux->parent = root->parent;
-
-	if(root->parent == null_node)
-	{
-		m_root = aux;
-	}
-	else if(root == root->parent->left)
-	{
-		root->parent->left = aux;
-	}
-	else
-	{
-		root->parent->right = aux;
-	}
-
-	aux->left = root;
-	root->parent = aux;
-}
-
-template < typename KeyType, typename ValueType >
-void RBT< KeyType, ValueType >::rotate_left_child1( RBNode *  root)
-{				
-	RBNode * aux = root->left;
-	root->left = aux->right;
 	
-
-	if(aux->right != null_node)
-	{	
-		aux->right->parent = root;
-	}
-
-	aux->parent = root->parent;
-	if(root->parent == null_node)
-	{  
-		m_root = aux;
-	}
-	else if(root == root->parent->right)
-	{   
-		root->parent->right = aux;
-	}
-	else
-	{   
-		root->parent->left = aux;
-	}
-	aux->right = root;
-	root->parent = aux;
-}	

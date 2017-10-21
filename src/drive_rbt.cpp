@@ -86,8 +86,11 @@ int main()
         {
             std::cout << "< " << std::setw(3) << data[e].first << " , \"" << data[e].second << "\" >\n";
             tree.insert( data[e].first, data[e].second );
+            std::cout << "\n>>> The tree:\n" << tree << std::endl;
+            assert( tree.validate() );
         }
         std::cout << "\n>>> The tree:\n" << tree << std::endl;
+        //std::cout << 
 
         // Test all traversals
         /*
