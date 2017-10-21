@@ -62,7 +62,7 @@ int main()
         //BST< size_t, std::string, decltype( compare_keys ) > tree( compare_keys );
 #endif
         // Test standard constructor
-        RBT< size_t, std::string, decltype( compare_keys ) > tree( compare_keys );
+        RBT< size_t, std::string > tree( compare_keys );
 
         // Test iterator constructor
         //BST< size_t, std::string, decltype( compare_keys ) > tree2( data2.begin(), data2.end() ,compare_keys );
