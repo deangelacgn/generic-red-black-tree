@@ -126,7 +126,6 @@ void RBT< KeyType, ValueType >::rearrange( RBNode * & root, RBNode * & inserted_
 		else
 		{
 			m_uncle = m_grand->left;
-			std::cout << "to aqui" << std::endl;
 
 			if((m_uncle != null_node) && (m_uncle->color == color_e::RED))
 			{
@@ -137,11 +136,9 @@ void RBT< KeyType, ValueType >::rearrange( RBNode * & root, RBNode * & inserted_
 			}
 			else
 			{
-				std::cout << "e aqui" << std::endl;
 
 				if(inserted_node == m_parent->left)
 				{
-					std::cout << "mas nao aqui" << std::endl;
 					rotate_left_child(m_parent);
 					inserted_node = m_parent;
 					m_parent = inserted_node->parent;

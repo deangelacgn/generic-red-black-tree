@@ -148,6 +148,10 @@ class RBT
 
 		RBT & operator=( const RBT & rhs );
 
+		bool operator==( const RBT& other ) const ;
+
+        bool operator!=( const RBT& other ) const { return not (*this == other);};
+
 		//=== access members
 
 		const ValueType & find_min( void ) const;
