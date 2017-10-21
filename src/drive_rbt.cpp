@@ -20,9 +20,10 @@ int main()
     auto n_unit{0}; // unit test count.
 
     // Our BST will store strings with integer keys.
-    typedef std::pair< size_t,std::string > test_type;
+    typedef std::pair< size_t, size_t > test_type;
 
     // Input data
+    /*
     test_type data[] = {
         { 0, "zero" },
         { 1, "one" },
@@ -35,15 +36,27 @@ int main()
         { 8, "eight" },
         { 9, "nine" },
         { 10, "ten" }
-    };
+    };*/
 
-    std::vector<test_type> data2 = {{ 5, "five" }, { 1, "one" }, { 7, "seven" }, { 0, "zero" }, { 6, "six" }, { 2, "two" }};
-    std::initializer_list<test_type> data3 = {{ 5, "five" }, { 1, "one" }, { 7, "seven" }, { 0, "zero" }, { 6, "six" }, { 2, "two" }};
+    test_type data[100];
+    for(size_t i = 0; i < 100; i++)
+    {
+       data[i] = std::make_pair(i, i);
+    }
+
+    //std::vector<test_type> data2 = {{ 5, "five" }, { 1, "one" }, { 7, "seven" }, { 0, "zero" }, { 6, "six" }, { 2, "two" }};
+    //std::initializer_list<test_type> data3 = {{ 5, "five" }, { 1, "one" }, { 7, "seven" }, { 0, "zero" }, { 6, "six" }, { 2, "two" }};
 
 
     // Print the input
     {
-        size_t insertion_order[] = { 5, 1, 7, 0, 3, 2, 4,9, 6 };
+        size_t insertion_order[100];
+
+        for(size_t i = 0; i < 100; i++)
+        {
+           insertion_order[i] = i;
+        }
+
         // The tree declaration.
 //#define USE_FUNCTOR
 #ifdef USE_FUNCTOR
@@ -62,7 +75,7 @@ int main()
         //BST< size_t, std::string, decltype( compare_keys ) > tree( compare_keys );
 #endif
         // Test standard constructor
-        RBT< size_t, std::string > tree( compare_keys );
+        RBT< size_t, size_t > tree( compare_keys );
 
         // Test iterator constructor
         //BST< size_t, std::string, decltype( compare_keys ) > tree2( data2.begin(), data2.end() ,compare_keys );
@@ -77,6 +90,7 @@ int main()
         std::cout << "\n>>> The tree:\n" << tree << std::endl;
 
         // Test all traversals
+        /*
         std::cout << "Inorder traversal:"<<std::endl;
         tree.inorder();
         std::cout << "Numero de pretos:"<<std::endl;
@@ -131,7 +145,7 @@ int main()
         
         //std::cout << "\n>>> The tree:\n" << tree << std::endl;
 
-
+        */
 
     }
 

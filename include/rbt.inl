@@ -787,10 +787,3 @@ void RBT< KeyType, ValueType >::rotate_left_child1( RBNode *  root)
 	aux->right = root;
 	root->parent = aux;
 }	
-
-
-
-
-
-
-
