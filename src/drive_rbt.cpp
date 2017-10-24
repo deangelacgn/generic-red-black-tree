@@ -103,7 +103,6 @@ int main()
         {
             //std::cout << "< " << std::setw(3) << data[e].first << " , \"" << data[e].second << "\" >\n";
             tree.insert( e.first, e.second );
-            assert( tree.validate() );
         }
         
         for( const auto & e : data )
@@ -282,6 +281,39 @@ int main()
 
         std::cout << ">>> Passed!\n\n";
     }
+
+    {
+        std::cout << ">>> Unit teste #" << ++n_unit << ": operator==().\n";
+        // The tree
+        RBT< size_t, size_t > tree( compare_keys );
+        assert( true == tree.empty() );
+        RBT< size_t, size_t > tree2( compare_keys );
+        assert( true == tree2.empty() );
+
+        // Empty tree must be equal.
+        assert( tree == tree2 );
+
+        // Insert data in both trees, so they are equal.
+        for( const auto & e : data )
+        {
+            tree.insert( e.first, e.second );
+            tree2.insert( e.first, e.second );
+        }
+        assert( tree.validate() );
+        assert( tree2.validate() );
+
+        // equal operator.
+        assert( tree2 == tree );
+        assert( tree2.size() == tree.size() );
+
+        // Let us remove just one element from one of the trees.
+        tree.remove( data[0].first );
+        assert( not( tree2 == tree ) );
+        assert( tree != tree2 );
+
+        std::cout << ">>> Passed!\n\n";
+    }
+
 
     {
         std::cout << ">>> Unit teste #" << ++n_unit << ": copy constructor.\n";
