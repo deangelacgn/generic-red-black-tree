@@ -349,7 +349,7 @@ int main()
 
         
         auto tree_copy( tree );
-
+        std::cout << "oi" <<std::endl;
         auto tree2 = tree_copy;
         tree2 = tree;
         tree_copy = tree;

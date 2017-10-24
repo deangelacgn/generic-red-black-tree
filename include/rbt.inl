@@ -85,6 +85,23 @@ typename RBT< KeyType, ValueType >::RBNode * RBT< KeyType, ValueType >::find_nod
 }
 
 template < typename KeyType, typename ValueType >
+bool RBT< KeyType, ValueType >::equal( const RBNode* a, const RBNode* b, const RBT< KeyType, ValueType > & other) const
+{
+
+	if(a == this->null_node && b == other.null_node)
+	{
+		return true;
+	}
+	else if(a != null_node && b != null_node)
+	{
+		return key_equal(a->key, b->key) && equal(a->left, b->left, other) && equal(a->right, b->right, other);
+	}
+
+	return false;
+}
+
+
+template < typename KeyType, typename ValueType >
 void RBT< KeyType, ValueType >::rearrange( RBNode * & root, RBNode * & inserted_node) 
 {
 	while((inserted_node != root) && (inserted_node->color != color_e::BLACK) && (inserted_node->parent->color == color_e::RED))
@@ -169,9 +186,9 @@ void RBT< KeyType, ValueType >::clear( RBNode * & root )
 }
 
 template < typename KeyType, typename ValueType >
-typename RBT< KeyType, ValueType >::RBNode * RBT< KeyType, ValueType >::clone( const RBNode * root )
+typename RBT< KeyType, ValueType >::RBNode * RBT< KeyType, ValueType >::clone( const RBNode * root)
 {
-	if(root == null_node)
+	if(root->is_null_node)
     {
         return null_node;
     }
@@ -198,7 +215,7 @@ typename RBT< KeyType, ValueType >::RBNode * RBT< KeyType, ValueType >::getSibli
 
 template < typename KeyType, typename ValueType >
 void RBT< KeyType, ValueType >::remove( RBNode *root, const KeyType & key)
-{		
+{	//std::cout<<"remove"<<std::endl;
 	RBNode * temp = new RBNode();				
 	RBNode * temp2 = new RBNode();
 	if(successor(root) != root){			
@@ -212,16 +229,6 @@ void RBT< KeyType, ValueType >::remove( RBNode *root, const KeyType & key)
 		temp2 = null_node;
 	}
 	
-	//substituindo por root por temp	    
-	
-	/*if(root->parent != null_node){
-		if(root->parent->left == root){
-			root->parent->left = temp;
-		}
-        else{
-			root->parent->right = temp;
-		}
-	}*/
 
 	if(temp->parent == null_node){
 		m_root = temp2;
@@ -237,21 +244,15 @@ void RBT< KeyType, ValueType >::remove( RBNode *root, const KeyType & key)
 	if(temp2 != null_node){
 		temp2->parent = temp->parent;
 	}
-	/*
-	temp->left = root->left;
-	temp->right = root->right;
-	temp->parent = root->parent;
-	temp->color = root->color;	
-	*/
+	
 	if(root != temp){
-		if(root != m_root)				
-			root->color = temp->color;
+		
 		root->key = temp->key;
-	    	root->data = temp->data;
+	    root->data = temp->data;
 	}
 	
-	//
 	if(temp->color == color_e::BLACK){
+		//std::cout<<"ai"<<std::endl;		
 		if(temp2->color == color_e::RED){  //ou temp2 == red ou temp2==null_node
 			temp2->color = color_e::BLACK;
 		}else{
@@ -263,35 +264,42 @@ void RBT< KeyType, ValueType >::remove( RBNode *root, const KeyType & key)
 	//
 	delete temp;
 	temp = nullptr;	
+
 }
 
 template < typename KeyType, typename ValueType >
 void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
                                        //nó duplo preto diabo		
-	std::cout<<"No duplo"<<std::endl;
-	while(true){
-		if(root->right != null_node){     //////////// NÓ DUPLO NA ESQUERDA
+	//std::cout<<"No duplo"<<std::endl;
+	
+	while(root != m_root && root->color==color_e::BLACK ){
+		//std::cout<<"1"<<std::endl;
+
+		//std::cout<<getSibling(root)->left->color<<std::endl;
+		//std::cout<<"2"<<std::endl;
+		
+		if(root->parent->left == root){     //////////// NÓ DUPLO NA ESQUERDA
 			if(getSibling(root)->color == color_e::RED){                          //caso 1
-				std::cout<<"Caso 1"<<std::endl;							
+				//std::cout<<"Caso 1"<<std::endl;							
 				root->parent->color=color_e::RED;   							
 				getSibling(root)->color=color_e::BLACK;
 				rotate_right_child(root->parent);	
 
 			}
 			else if(getSibling(root)->left->color == color_e::BLACK && getSibling(root)->right->color == color_e::BLACK){ //caso 2
-				std::cout<<"Caso 2"<<std::endl;
+				//std::cout<<"Caso 2"<<std::endl;
 				getSibling(root)->color = color_e::RED;
-				if(root->parent != null_node)						
-					root=root->parent;
-				else
-					break;
-				if(root->color == color_e::RED){
+				//if(root->parent != null_node)						
+				root=root->parent;
+				//else
+				//	break;
+				/*if(root->color == color_e::RED){
 					root->color=color_e::BLACK;
 					break;
-				}
+				}*/
 			}
 			else if(getSibling(root)->right->color == color_e::BLACK){                     
-				std::cout<<"Caso 3"<<std::endl;							
+				//std::cout<<"Caso 3"<<std::endl;							
 				getSibling(root)->color=color_e::RED;
 				getSibling(root)->left->color=color_e::BLACK; 
 				rotate_left_child(root->parent->right);
@@ -299,7 +307,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				}else{
 				//caso 4
 			
-				std::cout<<"Caso 4"<<std::endl;							
+				//std::cout<<"Caso 4"<<std::endl;							
 				getSibling(root)->color = root->parent->color;								
 				root->parent->color = color_e::BLACK;							
 				getSibling(root)->right->color = color_e::BLACK;											
@@ -310,14 +318,14 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 		}
 		else{						//////////// NÓ DUPLO NA DIREITA
 			if(getSibling(root)->color == color_e::RED){                          //caso 1
-				std::cout<<"Caso 1"<<std::endl;							
+				//std::cout<<"Caso 1"<<std::endl;							
 				root->parent->color=color_e::RED;   							
 				getSibling(root)->color=color_e::BLACK;
 				rotate_left_child(root->parent);	
 
 			}
 			else if(getSibling(root)->left->color == color_e::BLACK && getSibling(root)->right->color == color_e::BLACK){ //caso 2
-				std::cout<<"Caso 2"<<std::endl;
+				//std::cout<<"Caso 2"<<std::endl;
 				getSibling(root)->color = color_e::RED;
 				if(root->parent != null_node)						
 					root=root->parent;
@@ -329,7 +337,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				}
 			}
 			else if(getSibling(root)->left->color == color_e::BLACK){                     
-				std::cout<<"Caso 3"<<std::endl;							
+				//std::cout<<"Caso 3"<<std::endl;							
 				getSibling(root)->color=color_e::RED;
 				getSibling(root)->right->color=color_e::BLACK; 
 				rotate_right_child(root->parent->left);
@@ -337,7 +345,7 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				}else{
 				//caso 4
 			
-				std::cout<<"Caso 4"<<std::endl;							
+				//std::cout<<"Caso 4"<<std::endl;							
 				getSibling(root)->color = root->parent->color;								
 				root->parent->color = color_e::BLACK;							
 				getSibling(root)->left->color = color_e::BLACK;											
@@ -347,6 +355,8 @@ void RBT< KeyType, ValueType >::fixRemove(RBNode *root){
 				}
 		}//termina o else		
 	}//termina o while
+	root->color=color_e::BLACK;
+	m_root->color=color_e::BLACK;
 }//termina a função
 
 template < typename KeyType, typename ValueType >
@@ -526,18 +536,32 @@ RBT< KeyType, ValueType >::RBT( const RBT< KeyType, ValueType > & other ):m_key_
 template < typename KeyType, typename ValueType >
 RBT< KeyType, ValueType >::~RBT()
 {
-	delete m_root;
+	if (m_root != null_node)
+	{
+    	delete m_root;
+	}
+	delete null_node;
 }
 
 template < typename KeyType, typename ValueType >
 RBT< KeyType, ValueType > & RBT< KeyType, ValueType >::operator=( const RBT< KeyType, ValueType > & rhs )
 {
-	delete m_root;
+	if (m_root != null_node)
+	{
+		delete m_root;
+	}
+
     m_root = clone(rhs.m_root);
     m_n_nodes = rhs.m_n_nodes;
     m_key_less = rhs.m_key_less;
 
     return *this;
+}
+
+template < typename KeyType, typename ValueType >
+bool RBT< KeyType, ValueType >::operator==( const RBT< KeyType, ValueType > & other ) const 
+{
+	return equal(this->m_root, other.m_root, other);
 }
 
 template < typename KeyType, typename ValueType >
@@ -711,6 +735,7 @@ void RBT< KeyType, ValueType >::remove( const KeyType & key )
     {
 		RBNode * temp = new RBNode();
 		temp = this->m_root;
+		m_n_nodes--;
 
 		while(temp != null_node)
         {
@@ -735,5 +760,12 @@ void RBT< KeyType, ValueType >::remove( const KeyType & key )
     	delete temp;
     	temp = nullptr;		
 	}
+	/*
+	else
+	{
+		std::cout << "elemento nao ta na arvore"<<std::endl;
+	}*/
 }
+
+
 	

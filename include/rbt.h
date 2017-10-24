@@ -132,6 +132,8 @@ class RBT
 
 		void postorder( const RBNode * root, const UnaryFunction & visit );
 
+		bool equal( const RBNode* a, const RBNode* b, const RBT& other ) const ;
+
 	public :
 
 		//=== special member
