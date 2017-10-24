@@ -188,7 +188,7 @@ void RBT< KeyType, ValueType >::clear( RBNode * & root )
 template < typename KeyType, typename ValueType >
 typename RBT< KeyType, ValueType >::RBNode * RBT< KeyType, ValueType >::clone( const RBNode * root)
 {
-	if(root->is_null_node)
+	if(root == null_node)
     {
         return null_node;
     }
@@ -536,20 +536,15 @@ RBT< KeyType, ValueType >::RBT( const RBT< KeyType, ValueType > & other ):m_key_
 template < typename KeyType, typename ValueType >
 RBT< KeyType, ValueType >::~RBT()
 {
-	if (m_root != null_node)
-	{
-    	delete m_root;
-	}
-	delete null_node;
+    delete m_root;
 }
 
 template < typename KeyType, typename ValueType >
 RBT< KeyType, ValueType > & RBT< KeyType, ValueType >::operator=( const RBT< KeyType, ValueType > & rhs )
 {
-	if (m_root != null_node)
-	{
-		delete m_root;
-	}
+
+	delete m_root;
+
 
     m_root = clone(rhs.m_root);
     m_n_nodes = rhs.m_n_nodes;

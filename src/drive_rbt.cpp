@@ -353,6 +353,7 @@ int main()
         auto tree2 = tree_copy;
         tree2 = tree;
         tree_copy = tree;
+        std::cout << "vai dar erro agora" <<std::endl;
         //tree = tree_copy;
         
         for( const auto & e : data)
