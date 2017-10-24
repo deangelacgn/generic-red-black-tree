@@ -39,41 +39,9 @@ int main()
     { 55, 55 }
     };
 
-    // Input data
-    /*
-    test_type data[] = {
-        { 0, "zero" },
-        { 1, "one" },
-        { 2, "two" },
-        { 3, "three" },
-        { 4, "four" },
-        { 5, "five" },
-        { 6, "six" },
-        { 7, "seven" },
-        { 8, "eight" },
-        { 9, "nine" },
-        { 10, "ten" }
-    };*/
-    /*
-    test_type data[100];
-    for(size_t i = 0; i < 100; i++)
+    
+
     {
-       data[i] = std::make_pair(i, i);
-    }*/
-
-    //std::vector<test_type> data2 = {{ 5, "five" }, { 1, "one" }, { 7, "seven" }, { 0, "zero" }, { 6, "six" }, { 2, "two" }};
-    //std::initializer_list<test_type> data3 = {{ 5, "five" }, { 1, "one" }, { 7, "seven" }, { 0, "zero" }, { 6, "six" }, { 2, "two" }};
-
-
-    // Print the input
-    {
-        /*size_t insertion_order[100];
-
-        for(size_t i = 0; i < 100; i++)
-        {
-           insertion_order[i] = i;
-        }*/
-
         // The tree declaration.
 //#define USE_FUNCTOR
 #ifdef USE_FUNCTOR
@@ -351,15 +319,18 @@ int main()
             assert( false == tree.empty() );
         }
         assert( tree.validate() );
-        /*
+        //std::cout << "the tree "<< std::endl << tree <<std::endl;
+
         for( const auto & e : data )
         {
             //std::cout << "Removing: < " << std::setw(3) << e.first << " , \"" << e.second << "\" >\n";
+            //std::cout <<"removeu: "<<  e.first  << std::endl;
             tree.remove( e.first );
             //std::cout << "\n>>> [main()] The tree:\n" << tree << std::endl;
             assert( tree.validate() );
         }
-        assert( true == tree.empty() );*/
+        
+        //assert( true == tree.empty() );
 
         std::cout << ">>> Passed!\n\n";
     }
@@ -369,14 +340,27 @@ int main()
 
         RBT< size_t, size_t > tree( compare_keys );
 
-        /*
+        for( const auto & e : data )
+        {
+            tree.insert( e.first, e.second );
+            assert( false == tree.empty() );
+        }
+        assert( tree.validate() );
+
+        
         auto tree_copy( tree );
+
+        auto tree2 = tree_copy;
+        tree2 = tree;
+        tree_copy = tree;
+        //tree = tree_copy;
+        
         for( const auto & e : data)
         {
-            tree = tree_copy; // restore back the original tree.
-            tree.remove( e.first ); // Remove a single node.
-            assert( tree.validate() ); // Check whether everything is fine with the tree.
-        }*/
+            //tree = tree_copy; // restore back the original tree.
+            //tree.remove( e.first ); // Remove a single node.
+            //assert( tree.validate() ); // Check whether everything is fine with the tree.
+        }
         
          for( const auto & e : data)
         {
