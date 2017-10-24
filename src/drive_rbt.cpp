@@ -231,17 +231,17 @@ int main()
 
     {
         std::cout << ">>> Unit teste #" << ++n_unit << ": assignment operator.\n";
+
         // The tree
         RBT< size_t, size_t > tree( compare_keys );
         assert( true == tree.empty() );
-
+        
         for( const auto & e : data )
             tree.insert( e.first, e.second );
         assert( tree.validate() );
 
         // Assignment operator.
         auto tree2 = tree;
-
         // Let us test if everything is ok with the clone tree.
         assert( tree2.validate() == true );
         for( const auto & e : data )
@@ -324,7 +324,6 @@ int main()
         for( const auto & e : data )
         {
             //std::cout << "Removing: < " << std::setw(3) << e.first << " , \"" << e.second << "\" >\n";
-            //std::cout <<"removeu: "<<  e.first  << std::endl;
             tree.remove( e.first );
             //std::cout << "\n>>> [main()] The tree:\n" << tree << std::endl;
             assert( tree.validate() );
@@ -346,21 +345,14 @@ int main()
             assert( false == tree.empty() );
         }
         assert( tree.validate() );
-
         
         auto tree_copy( tree );
-        std::cout << "oi" <<std::endl;
-        auto tree2 = tree_copy;
-        tree2 = tree;
-        tree_copy = tree;
-        std::cout << "vai dar erro agora" <<std::endl;
-        //tree = tree_copy;
         
         for( const auto & e : data)
         {
-            //tree = tree_copy; // restore back the original tree.
-            //tree.remove( e.first ); // Remove a single node.
-            //assert( tree.validate() ); // Check whether everything is fine with the tree.
+            tree_copy = tree; // restore back the original tree.
+            tree_copy.remove( e.first ); // Remove a single node.
+            assert( tree.validate() ); // Check whether everything is fine with the tree.
         }
         
          for( const auto & e : data)
