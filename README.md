@@ -2,20 +2,20 @@
 
 This RBT(short for Red-Black Tree) class implements the following public methods:
 
-find_min()
-find_max()
-contains()
-empty()
-size()
-retrieve()
-validate()
-count_blacks()
-clear()
-insert()
-remove()
-preorder()
-postorder()
-inorder()
+* find_min()
+* find_max()
+* contains()
+* empty()
+* size()
+* retrieve()
+* validate()
+* count_blacks()
+* clear()
+* insert()
+* remove()
+* preorder()
+* postorder()
+* inorder()
 
 Moreover, this RBT class has a Default constructor and a Copy constructor.
 
@@ -42,9 +42,7 @@ g++ -std=c++11 drive_rbt.cpp -g && ./a.out
 
 If all tests pass, you can start playing around with the RBT by including rbt.h in your own .cpp files.
 
-
-
-## Autores
+## Authors
 
 * Deangela C. G. Neves
 * Maria Clara Martins 
