@@ -22,6 +22,7 @@ Moreover, this RBT class has a Default constructor and a Copy constructor.
 The structure of of the tree was inspired in the one proposed by Cormen et al in the book Introduction to Algorithms, which uses a sentinel node to represent all leafs of the tree, as shown in the figure below. 
 
 ![alt text](https://image.slidesharecdn.com/10redblacktrees-150322214538-conversion-gate01/95/10-redblack-trees-23-638.jpg?cb=1456759557)
+
 Rotation, Insertion and Removal methods were also implemented according to the pseudocodes provided in the book. You can find more details about the implementation and description of all methods and constructors here.
 
 ### Prerequisites
